@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace MovieStore.Entities
+namespace YemekGetir.Entities
 {
   public class Restaurant : ITokenHolder
   {
@@ -14,6 +14,7 @@ namespace MovieStore.Entities
     public int CategoryId { get; set; }
     public int AddressId { get; set; }
     public Address Address { get; set; }
+    public List<Order> Orders { get; set; }
     public List<Product> Products { get; set; }
     public string Email { get; set; }
     public string Password { get; set; }

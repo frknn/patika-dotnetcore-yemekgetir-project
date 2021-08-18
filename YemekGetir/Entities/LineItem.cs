@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace MovieStore.Entities
+namespace YemekGetir.Entities
 {
   public class LineItem
   {
@@ -9,9 +9,10 @@ namespace MovieStore.Entities
     public int Id { get; set; }
     public int ProductId { get; set; }
     public int CartId { get; set; }
+    public Cart Cart { get; set; }
     public string Name { get; set; }
     public int Quantity { get; set; }
-    public int IndividualPrice { get; set; }
-    public int TotalPrice { get; set; }
+    public int Price { get; set; }
+    public int TotalPrice { get { return Quantity * Price; } }
   }
 }

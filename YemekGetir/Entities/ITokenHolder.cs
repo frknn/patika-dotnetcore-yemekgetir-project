@@ -1,6 +1,6 @@
 using System;
 
-namespace MovieStore.Entities
+namespace YemekGetir.Entities
 {
   public interface ITokenHolder
   {

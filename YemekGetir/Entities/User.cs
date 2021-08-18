@@ -1,8 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace MovieStore.Entities
+namespace YemekGetir.Entities
 {
   public class User : ITokenHolder
   {
@@ -15,6 +16,8 @@ namespace MovieStore.Entities
     public Address Address { get; set; }
     public string PhoneNumber { get; set; }
     public int Wallet { get; set; } = 0;
+    public Cart Cart { get; set; }
+    public List<Order> Orders { get; set; }
     public string Email { get; set; }
     public string Password { get; set; }
     public string RefreshToken { get; set; }
