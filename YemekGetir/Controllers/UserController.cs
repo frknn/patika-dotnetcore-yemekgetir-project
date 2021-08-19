@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using YemekGetir.Application.UserOperations.Commands.AddAddress;
 using YemekGetir.Application.UserOperations.Commands.CreateToken;
 using YemekGetir.Application.UserOperations.Commands.CreateUser;
 using YemekGetir.Application.UserOperations.Commands.DeleteUser;
@@ -89,6 +90,19 @@ namespace YemekGetir.Controllers
       GetUserByIdViewModel user = command.Handle();
 
       return Ok(user);
+    }
+
+    [Authorize]
+    [HttpPost("{id}/address")]
+    public IActionResult AddAddress(string id, [FromBody] AddAddressToUserModel newAddress)
+    {
+      AddAddressCommand command = new AddAddressCommand(_context, _mapper, _httpContextAccessor);
+      command.Id = id;
+      command.Model = newAddress;
+
+      command.Handle();
+
+      return Ok();
     }
   }
 }

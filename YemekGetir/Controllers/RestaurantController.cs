@@ -13,6 +13,10 @@ using YemekGetir.DBOperations;
 using YemekGetir.TokenOperations.Models;
 using YemekGetir.Application.RestaurantOperations.Queries.GetRestaurants;
 using System.Collections.Generic;
+// using YemekGetir.Application.RestaurantOperations.Commands.AddProduct;
+using System;
+using YemekGetir.Application.RestaurantOperations.Commands.AddProduct;
+using YemekGetir.Application.RestaurantOperations.Commands.AddAddress;
 
 namespace YemekGetir.Controllers
 {
@@ -93,6 +97,19 @@ namespace YemekGetir.Controllers
       return Ok(user);
     }
 
+    [Authorize]
+    [HttpPost("{id}/address")]
+    public IActionResult AddAddress(string id, [FromBody] AddAddressToRestaurantModel newAddress)
+    {
+      AddAddressCommand command = new AddAddressCommand(_context, _mapper, _httpContextAccessor);
+      command.Id = id;
+      command.Model = newAddress;
+
+      command.Handle();
+
+      return Ok();
+    }
+
     [HttpGet]
     public IActionResult GetRestaurants()
     {
@@ -101,6 +118,22 @@ namespace YemekGetir.Controllers
       List<GetRestaurantsVM> restaurants = query.Handle();
 
       return Ok(restaurants);
+    }
+
+    [Authorize]
+    [HttpPost("{id}/products")]
+    public IActionResult AddProduct(string id, [FromBody] AddProductModel newProduct)
+    {
+      AddProductCommand command = new AddProductCommand(_context, _mapper, _httpContextAccessor);
+      command.Id = id;
+      command.Model = newProduct;
+
+      AddProductCommandValidator validator = new AddProductCommandValidator();
+      validator.ValidateAndThrow(command);
+
+      command.Handle();
+
+      return Ok();
     }
   }
 }

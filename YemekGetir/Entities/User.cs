@@ -7,12 +7,11 @@ namespace YemekGetir.Entities
 {
   public class User : ITokenHolder
   {
-    [Key]
+    // [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
-    public int AddressId { get; set; }
     public Address Address { get; set; }
     public string PhoneNumber { get; set; }
     public int Wallet { get; set; } = 0;

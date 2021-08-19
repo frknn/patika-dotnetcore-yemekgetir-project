@@ -26,7 +26,10 @@ namespace YemekGetir.Application.UserOperations.Commands.CreateUser
         throw new InvalidOperationException("Kullanıcı zaten mevcut.");
       }
 
+      Cart cart = new Cart(){};
+
       user = _mapper.Map<User>(Model);
+      user.Cart = cart;
       _dbContext.Users.Add(user);
       _dbContext.SaveChanges();
     }
@@ -46,6 +49,13 @@ namespace YemekGetir.Application.UserOperations.Commands.CreateUser
     {
       get { return lastName; }
       set { lastName = value.Trim(); }
+    }
+
+    private string phoneNumber;
+    public string PhoneNumber
+    {
+      get { return phoneNumber; }
+      set { phoneNumber = value.Trim(); }
     }
 
     private string email;

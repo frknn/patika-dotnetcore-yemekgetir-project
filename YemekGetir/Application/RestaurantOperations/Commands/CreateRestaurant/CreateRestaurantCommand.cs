@@ -52,5 +52,6 @@ namespace YemekGetir.Application.RestaurantOperations.Commands.CreateRestaurant
       get { return password; }
       set { password = value.Trim(); }
     }
+    public int CategoryId { get; set; }
   }
 }

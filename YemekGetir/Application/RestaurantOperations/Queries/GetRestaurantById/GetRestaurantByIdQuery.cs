@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -27,14 +28,21 @@ namespace YemekGetir.Application.RestaurantOperations.Queries.GetRestaurantById
 
     public GetRestaurantByIdViewModel Handle()
     {
-      Restaurant restaurant = _dbContext.Restaurants.Where(restaurant => Convert.ToString(restaurant.Id) == Id)
+      Restaurant restaurant = _dbContext.Restaurants.Where(restaurant => restaurant.Id.ToString() == Id)
         .Include(restaurant => restaurant.Orders)
         .Include(restaurant => restaurant.Address)
         .Include(restaurant => restaurant.Products)
-          .SingleOrDefault();
+        .SingleOrDefault();
+
+      // foreach (var r in _dbContext.Restaurants)
+      // {
+      //   Console.WriteLine("Rest Id: " + r.Id + " - " + "Search Id: " + Id);
+      //   Console.WriteLine(r.Id == Id);
+      // }
+
       if (restaurant is null)
       {
-        throw new InvalidOperationException("Kullanıcı bulunamadı.");
+        throw new InvalidOperationException("Restoran bulunamadı.");
       }
 
       string requestOwnerId = _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(claim => claim.Type == "tokenHolderId").Value;
@@ -52,6 +60,7 @@ namespace YemekGetir.Application.RestaurantOperations.Queries.GetRestaurantById
   {
     public string Email { get; set; }
     public string Name { get; set; }
+    public string Category { get; set; }
     public GetRestaurantByIdAddressVM Address { get; set; }
     public List<GetRestaurantByIdOrderVM> Orders { get; set; }
     public List<GetRestaurantByIdProductVM> Products { get; set; }

@@ -31,6 +31,7 @@ namespace YemekGetir.Application.RestaurantOperations.Queries.GetRestaurants
   public class GetRestaurantsVM
   {
     public string Name { get; set; }
+    public string Category { get; set; }
     public List<GetRestaurantsProductVM> Products { get; set; }
   }
 

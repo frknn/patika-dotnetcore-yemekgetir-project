@@ -1,0 +1,56 @@
+using AutoMapper;
+using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using YemekGetir.Application.RestaurantOperations.Commands.CreateToken;
+using YemekGetir.Application.RestaurantOperations.Commands.CreateRestaurant;
+using YemekGetir.Application.RestaurantOperations.Commands.DeleteRestaurant;
+using YemekGetir.Application.RestaurantOperations.Commands.RefreshToken;
+using YemekGetir.Application.RestaurantOperations.Queries.GetRestaurantById;
+using YemekGetir.DBOperations;
+using YemekGetir.TokenOperations.Models;
+using YemekGetir.Application.RestaurantOperations.Queries.GetRestaurants;
+using System.Collections.Generic;
+// using YemekGetir.Application.RestaurantOperations.Commands.AddProduct;
+using System;
+using YemekGetir.Application.CartOperations.Commands.AddProduct;
+using YemekGetir.Application.RestaurantOperations.Commands.AddAddress;
+
+namespace YemekGetir.Controllers
+{
+  [ApiController]
+  [Route("[Controller]s")]
+  public class CartController : ControllerBase
+  {
+    private readonly IYemekGetirDbContext _context;
+    private readonly IMapper _mapper;
+    private readonly IConfiguration _configuration;
+    private readonly IHttpContextAccessor _httpContextAccessor;
+    public CartController(IYemekGetirDbContext context, IMapper mapper, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
+    {
+      _context = context;
+      _mapper = mapper;
+      _configuration = configuration;
+      _httpContextAccessor = httpContextAccessor;
+    }
+
+    [HttpPost("{id}")]
+    public IActionResult AddProduct(string id, [FromBody] AddProductToCartModel newItem)
+    {
+      AddProductCommand command = new AddProductCommand(_context, _mapper, _httpContextAccessor);
+      command.Id = id;
+      command.Model = newItem;
+
+      // CreateRestaurantCommandValidator validator = new CreateRestaurantCommandValidator();
+      // validator.ValidateAndThrow(command);
+
+      command.Handle();
+
+      return Ok();
+    }
+
+
+  }
+}

@@ -7,12 +7,11 @@ namespace YemekGetir.Entities
 {
   public class Restaurant : ITokenHolder
   {
-    [Key]
+    // [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; }
     public string Name { get; set; }
     public int CategoryId { get; set; }
-    public int AddressId { get; set; }
     public Address Address { get; set; }
     public List<Order> Orders { get; set; }
     public List<Product> Products { get; set; }

@@ -1,7 +1,10 @@
-using System.Linq;
 using AutoMapper;
+using YemekGetir.Application.RestaurantOperations.Commands.AddAddress;
+using YemekGetir.Application.RestaurantOperations.Commands.AddProduct;
+using YemekGetir.Application.RestaurantOperations.Commands.CreateRestaurant;
 using YemekGetir.Application.RestaurantOperations.Queries.GetRestaurantById;
 using YemekGetir.Application.RestaurantOperations.Queries.GetRestaurants;
+using YemekGetir.Application.UserOperations.Commands.AddAddress;
 using YemekGetir.Application.UserOperations.Commands.CreateUser;
 using YemekGetir.Application.UserOperations.Queries.GetUserById;
 using YemekGetir.Entities;
@@ -13,7 +16,7 @@ namespace YemekGetir.Common
     public MappingProfie()
     {
       CreateMap<CreateUserModel, User>()
-        .ForMember(dest => dest.Password, opt => opt.MapFrom(src => BCrypt.Net.BCrypt.HashPassword(src.Password))); ;
+        .ForMember(dest => dest.Password, opt => opt.MapFrom(src => BCrypt.Net.BCrypt.HashPassword(src.Password)));
 
       CreateMap<User, GetUserByIdViewModel>();
 
@@ -24,7 +27,8 @@ namespace YemekGetir.Common
 
       CreateMap<Address, GetUserByIdAddressVM>();
 
-      CreateMap<Restaurant, GetRestaurantByIdViewModel>();
+      CreateMap<Restaurant, GetRestaurantByIdViewModel>()
+            .ForMember(dest => dest.Category, opt => opt.MapFrom(src => (CategoryEnum)src.CategoryId));
 
       CreateMap<User, GetRestaurantByIdUserVM>()
         .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.FirstName + " " + src.LastName));
@@ -36,10 +40,18 @@ namespace YemekGetir.Common
 
       CreateMap<Product, GetRestaurantByIdProductVM>();
 
-      CreateMap<Restaurant, GetRestaurantsVM>();
+      CreateMap<Restaurant, GetRestaurantsVM>()
+      .ForMember(dest => dest.Category, opt => opt.MapFrom(src => (CategoryEnum)src.CategoryId));
 
       CreateMap<Product, GetRestaurantsProductVM>();
 
+      CreateMap<AddProductModel, Product>();
+
+      CreateMap<AddAddressToUserModel, Address>();
+      CreateMap<AddAddressToRestaurantModel, Address>();
+
+      CreateMap<CreateRestaurantModel, Restaurant>()
+        .ForMember(dest => dest.Password, opt => opt.MapFrom(src => BCrypt.Net.BCrypt.HashPassword(src.Password)));
     }
   }
 }

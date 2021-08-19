@@ -27,10 +27,22 @@ namespace YemekGetir.Controllers
       _context = context;
     }
 
-    [HttpGet]
-    public IActionResult Get()
+    [HttpGet("restaurants")]
+    public IActionResult GetRestaurants()
     {
       var result = _context.Restaurants.OrderBy(restaurant => restaurant.Name);
+      return Ok(result);
+    }
+    [HttpGet("users")]
+    public IActionResult GetUsers()
+    {
+      var result = _context.Users.Include(user => user.Cart).ThenInclude(cart => cart.LineItems).OrderBy(user => user.FirstName);
+      return Ok(result);
+    }
+    [HttpGet("carts")]
+    public IActionResult GetCarts()
+    {
+      var result = _context.Carts.Include(cart => cart.LineItems).OrderBy(cart => cart.Id);
       return Ok(result);
     }
   }
