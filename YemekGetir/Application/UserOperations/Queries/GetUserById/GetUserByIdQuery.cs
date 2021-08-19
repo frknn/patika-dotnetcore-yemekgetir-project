@@ -29,7 +29,7 @@ namespace YemekGetir.Application.UserOperations.Queries.GetUserById
     {
       User user = _dbContext.Users.Where(user => Convert.ToString(user.Id) == Id)
         .Include(user => user.Orders)
-        .Include(user => user.Cart)
+        .Include(user => user.Cart).ThenInclude(cart => cart.LineItems)
         .Include(user => user.Address)
       .SingleOrDefault();
       if (user is null)

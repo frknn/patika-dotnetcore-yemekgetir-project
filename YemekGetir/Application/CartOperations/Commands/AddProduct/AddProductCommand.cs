@@ -43,7 +43,6 @@ namespace YemekGetir.Application.CartOperations.Commands.AddProduct
         throw new InvalidOperationException("Ürün bulunamadı.");
       }
 
-      // sepette başka restoranın ürünü varsa ekleme
       bool hasAnyItemFromDiffrentRestaurant = cart.LineItems.Any(item => item.Product.RestaurantId != product.RestaurantId);
       if (hasAnyItemFromDiffrentRestaurant)
       {

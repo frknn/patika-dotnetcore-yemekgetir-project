@@ -17,6 +17,8 @@ using System.Collections.Generic;
 using System;
 using YemekGetir.Application.CartOperations.Commands.AddProduct;
 using YemekGetir.Application.RestaurantOperations.Commands.AddAddress;
+using YemekGetir.Application.CartOperations.Commands.UpdateProduct;
+using YemekGetir.Application.CartOperations.Commands.EmptyCart;
 
 namespace YemekGetir.Controllers
 {
@@ -36,12 +38,45 @@ namespace YemekGetir.Controllers
       _httpContextAccessor = httpContextAccessor;
     }
 
+    [Authorize]
     [HttpPost("{id}")]
     public IActionResult AddProduct(string id, [FromBody] AddProductToCartModel newItem)
     {
       AddProductCommand command = new AddProductCommand(_context, _mapper, _httpContextAccessor);
       command.Id = id;
       command.Model = newItem;
+
+      // CreateRestaurantCommandValidator validator = new CreateRestaurantCommandValidator();
+      // validator.ValidateAndThrow(command);
+
+      command.Handle();
+
+      return Ok();
+    }
+
+    [Authorize]
+    [HttpPut("{cartId}/items/{itemId}")]
+    public IActionResult UpdateProduct(string cartId, string itemId, [FromBody] UpdateProductInCartModel itemQuantity)
+    {
+      UpdateProductCommand command = new UpdateProductCommand(_context, _mapper, _httpContextAccessor);
+      command.CartId = cartId;
+      command.LineItemId = itemId;
+      command.Model = itemQuantity;
+
+      // CreateRestaurantCommandValidator validator = new CreateRestaurantCommandValidator();
+      // validator.ValidateAndThrow(command);
+
+      command.Handle();
+
+      return Ok();
+    }
+
+    [Authorize]
+    [HttpDelete("{id}/items")]
+    public IActionResult EmptyCart(string id)
+    {
+      EmptyCartCommand command = new EmptyCartCommand(_context, _httpContextAccessor);
+      command.Id = id;
 
       // CreateRestaurantCommandValidator validator = new CreateRestaurantCommandValidator();
       // validator.ValidateAndThrow(command);
