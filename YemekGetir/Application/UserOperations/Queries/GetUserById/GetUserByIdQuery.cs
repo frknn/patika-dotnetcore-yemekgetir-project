@@ -55,12 +55,12 @@ namespace YemekGetir.Application.UserOperations.Queries.GetUserById
     public string LastName { get; set; }
     public string PhoneNumber { get; set; }
     public int Wallet { get; set; }
-    public UserDetailAddressVM Address { get; set; }
-    public UserDetailCartVM Cart { get; set; }
-    public List<UserDetailOrderVM> Orders { get; set; }
+    public GetUserByIdAddressVM Address { get; set; }
+    public GetUserByIdCartVM Cart { get; set; }
+    public List<GetUserByIdOrderVM> Orders { get; set; }
   }
 
-  public class UserDetailOrderVM
+  public class GetUserByIdOrderVM
   {
     public string RestaurantName { get; set; }
     public string Status { get; set; }
@@ -68,13 +68,13 @@ namespace YemekGetir.Application.UserOperations.Queries.GetUserById
     public List<LineItem> LineItems { get; set; }
   }
 
-  public class UserDetailCartVM
+  public class GetUserByIdCartVM
   {
     public List<LineItem> LineItems { get; set; }
     public int TotalPrice { get; set; }
   }
 
-  public class UserDetailAddressVM
+  public class GetUserByIdAddressVM
   {
     public string Country { get; set; }
     public string District { get; set; }

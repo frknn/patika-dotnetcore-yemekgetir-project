@@ -1,5 +1,7 @@
 using System.Linq;
 using AutoMapper;
+using YemekGetir.Application.RestaurantOperations.Queries.GetRestaurantById;
+using YemekGetir.Application.RestaurantOperations.Queries.GetRestaurants;
 using YemekGetir.Application.UserOperations.Commands.CreateUser;
 using YemekGetir.Application.UserOperations.Queries.GetUserById;
 using YemekGetir.Entities;
@@ -15,12 +17,29 @@ namespace YemekGetir.Common
 
       CreateMap<User, GetUserByIdViewModel>();
 
-      CreateMap<Order, UserDetailOrderVM>()
+      CreateMap<Order, GetUserByIdOrderVM>()
         .ForMember(dest => dest.RestaurantName, opt => opt.MapFrom(src => src.Restaurant.Name));
 
-      CreateMap<Cart, UserDetailCartVM>();
+      CreateMap<Cart, GetUserByIdCartVM>();
 
-      CreateMap<Address, UserDetailAddressVM>();
+      CreateMap<Address, GetUserByIdAddressVM>();
+
+      CreateMap<Restaurant, GetRestaurantByIdViewModel>();
+
+      CreateMap<User, GetRestaurantByIdUserVM>()
+        .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.FirstName + " " + src.LastName));
+
+      CreateMap<Address, GetRestaurantByIdAddressVM>();
+
+      CreateMap<Order, GetUserByIdOrderVM>()
+        .ForMember(dest => dest.Status, opt => opt.MapFrom(src => (StatusEnum)src.StatusId));
+
+      CreateMap<Product, GetRestaurantByIdProductVM>();
+
+      CreateMap<Restaurant, GetRestaurantsVM>();
+
+      CreateMap<Product, GetRestaurantsProductVM>();
+
     }
   }
 }

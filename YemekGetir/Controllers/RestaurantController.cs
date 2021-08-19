@@ -4,25 +4,27 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using YemekGetir.Application.UserOperations.Commands.CreateToken;
-using YemekGetir.Application.UserOperations.Commands.CreateUser;
-using YemekGetir.Application.UserOperations.Commands.DeleteUser;
-using YemekGetir.Application.UserOperations.Commands.RefreshToken;
-using YemekGetir.Application.UserOperations.Queries.GetUserById;
+using YemekGetir.Application.RestaurantOperations.Commands.CreateToken;
+using YemekGetir.Application.RestaurantOperations.Commands.CreateRestaurant;
+using YemekGetir.Application.RestaurantOperations.Commands.DeleteRestaurant;
+using YemekGetir.Application.RestaurantOperations.Commands.RefreshToken;
+using YemekGetir.Application.RestaurantOperations.Queries.GetRestaurantById;
 using YemekGetir.DBOperations;
 using YemekGetir.TokenOperations.Models;
+using YemekGetir.Application.RestaurantOperations.Queries.GetRestaurants;
+using System.Collections.Generic;
 
 namespace YemekGetir.Controllers
 {
   [ApiController]
   [Route("[Controller]s")]
-  public class UserController : ControllerBase
+  public class RestaurantController : ControllerBase
   {
     private readonly IYemekGetirDbContext _context;
     private readonly IMapper _mapper;
     private readonly IConfiguration _configuration;
     private readonly IHttpContextAccessor _httpContextAccessor;
-    public UserController(IYemekGetirDbContext context, IMapper mapper, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
+    public RestaurantController(IYemekGetirDbContext context, IMapper mapper, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
     {
       _context = context;
       _mapper = mapper;
@@ -31,12 +33,12 @@ namespace YemekGetir.Controllers
     }
 
     [HttpPost]
-    public IActionResult CreateUser([FromBody] CreateUserModel newUser)
+    public IActionResult CreateRestaurant([FromBody] CreateRestaurantModel newRestaurant)
     {
-      CreateUserCommand command = new CreateUserCommand(_context, _mapper);
-      command.Model = newUser;
+      CreateRestaurantCommand command = new CreateRestaurantCommand(_context, _mapper);
+      command.Model = newRestaurant;
 
-      CreateUserCommandValidator validator = new CreateUserCommandValidator();
+      CreateRestaurantCommandValidator validator = new CreateRestaurantCommandValidator();
       validator.ValidateAndThrow(command);
 
       command.Handle();
@@ -45,7 +47,7 @@ namespace YemekGetir.Controllers
     }
 
     [HttpPost("connect/token")]
-    public ActionResult<Token> CreateToken([FromBody] UserLoginModel loginInfo)
+    public ActionResult<Token> CreateToken([FromBody] RestaurantLoginModel loginInfo)
     {
       CreateTokenCommand command = new CreateTokenCommand(_context, _configuration);
       command.Model = loginInfo;
@@ -69,9 +71,9 @@ namespace YemekGetir.Controllers
 
     [Authorize]
     [HttpDelete("{id}")]
-    public IActionResult DeleteUser(string id)
+    public IActionResult DeleteRestaurant(string id)
     {
-      DeleteUserCommand command = new DeleteUserCommand(_context, _httpContextAccessor);
+      DeleteRestaurantCommand command = new DeleteRestaurantCommand(_context, _httpContextAccessor);
       command.Id = id;
 
       command.Handle();
@@ -81,14 +83,24 @@ namespace YemekGetir.Controllers
 
     [Authorize]
     [HttpGet("{id}")]
-    public IActionResult GetUserDetils(string id)
+    public IActionResult GetRestaurantDetils(string id)
     {
-      GetUserByIdQuery command = new GetUserByIdQuery(_context, _mapper, _httpContextAccessor);
+      GetRestaurantByIdQuery command = new GetRestaurantByIdQuery(_context, _mapper, _httpContextAccessor);
       command.Id = id;
 
-      GetUserByIdViewModel user = command.Handle();
+      GetRestaurantByIdViewModel user = command.Handle();
 
       return Ok(user);
+    }
+
+    [HttpGet]
+    public IActionResult GetRestaurants()
+    {
+      GetRestaurantsQuery query = new GetRestaurantsQuery(_context, _mapper);
+
+      List<GetRestaurantsVM> restaurants = query.Handle();
+
+      return Ok(restaurants);
     }
   }
 }

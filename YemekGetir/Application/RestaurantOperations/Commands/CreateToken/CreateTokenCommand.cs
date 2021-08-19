@@ -6,11 +6,11 @@ using YemekGetir.TokenOperations;
 using YemekGetir.TokenOperations.Models;
 using Microsoft.Extensions.Configuration;
 
-namespace YemekGetir.Application.UserOperations.Commands.CreateToken
+namespace YemekGetir.Application.RestaurantOperations.Commands.CreateToken
 {
   public class CreateTokenCommand
   {
-    public UserLoginModel Model { get; set; }
+    public RestaurantLoginModel Model { get; set; }
     private readonly IYemekGetirDbContext _dbContext;
     private readonly IConfiguration _configuration;
 
@@ -22,14 +22,14 @@ namespace YemekGetir.Application.UserOperations.Commands.CreateToken
 
     public Token Handle()
     {
-      User user = _dbContext.Users.FirstOrDefault(user => user.Email == Model.Email);
+      Restaurant restaurant = _dbContext.Restaurants.FirstOrDefault(restaurant => restaurant.Email == Model.Email);
 
-      if (user is not null && BCrypt.Net.BCrypt.Verify(Model.Password, user.Password))
+      if (restaurant is not null && BCrypt.Net.BCrypt.Verify(Model.Password, restaurant.Password))
       {
         TokenHandler handler = new TokenHandler(_configuration);
-        Token token = handler.CreateAccessToken(user);
-        user.RefreshToken = token.RefreshToken;
-        user.RefreshTokenExpireDate = token.ExpirationDate.AddMinutes(5);
+        Token token = handler.CreateAccessToken(restaurant);
+        restaurant.RefreshToken = token.RefreshToken;
+        restaurant.RefreshTokenExpireDate = token.ExpirationDate.AddMinutes(5);
 
         _dbContext.SaveChanges();
         return token;
@@ -42,7 +42,7 @@ namespace YemekGetir.Application.UserOperations.Commands.CreateToken
 
   }
 
-  public class UserLoginModel
+  public class RestaurantLoginModel
   {
     public string Email { get; set; }
     public string Password { get; set; }

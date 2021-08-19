@@ -13,6 +13,7 @@ namespace YemekGetir.DBOperations
     public DbSet<Cart> Carts { get; set; }
     public DbSet<Address> Addresses { get; set; }
 
+
     int SaveChanges();
   }
 }
