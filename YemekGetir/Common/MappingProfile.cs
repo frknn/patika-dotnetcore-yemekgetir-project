@@ -23,12 +23,16 @@ namespace YemekGetir.Common
       CreateMap<Order, GetUserByIdOrderVM>()
         .ForMember(dest => dest.RestaurantName, opt => opt.MapFrom(src => src.Restaurant.Name));
 
+      CreateMap<Order, GetRestaurantByIdOrderVM>()
+        .ForMember(dest => dest.Status, opt => opt.MapFrom(src => (StatusEnum)src.StatusId));
+      // .ForMember(dest => dest.User.Name, opt => opt.MapFrom(src => src.User.FirstName + " " + src.User.LastName));
+
       CreateMap<Cart, GetUserByIdCartVM>();
 
       CreateMap<Address, GetUserByIdAddressVM>();
 
       CreateMap<Restaurant, GetRestaurantByIdViewModel>()
-            .ForMember(dest => dest.Category, opt => opt.MapFrom(src => (CategoryEnum)src.CategoryId));
+        .ForMember(dest => dest.Category, opt => opt.MapFrom(src => (CategoryEnum)src.CategoryId));
 
       CreateMap<User, GetRestaurantByIdUserVM>()
         .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.FirstName + " " + src.LastName));
@@ -54,6 +58,8 @@ namespace YemekGetir.Common
         .ForMember(dest => dest.Password, opt => opt.MapFrom(src => BCrypt.Net.BCrypt.HashPassword(src.Password)));
 
       CreateMap<LineItem, GetUserByIdLineItemVM>();
+
+      CreateMap<LineItem, GetRestaurantByIdLineItemVM>();
     }
   }
 }

@@ -39,7 +39,7 @@ namespace YemekGetir.Application.OrderOperations.Commands.CreateOrder
         throw new InvalidOperationException("Sepetiniz boş. Sipariş oluşturabilmek için sepetinize ürün ekleyiniz.");
       }
 
-      Restaurant restaurant = user.Cart.LineItems.First().Product.Restaurant;
+      Restaurant restaurant = _dbContext.Restaurants.Include(restaurant => restaurant.Orders).SingleOrDefault(restaurant => restaurant.Id == user.Cart.LineItems.First().Product.Restaurant.Id);
       Console.WriteLine(restaurant.Name);
 
       Order order = new Order()
@@ -48,9 +48,12 @@ namespace YemekGetir.Application.OrderOperations.Commands.CreateOrder
         Restaurant = restaurant,
         ShippingAddress = user.Address,
         LineItems = user.Cart.LineItems,
+
       };
 
-      user.Orders.Add(order);
+      // user.Orders.Add(order);
+      // restaurant.Orders.Add(order);
+      _dbContext.Orders.Add(order);
       user.Cart.LineItems.ForEach(item => item.isActive = false);
 
       _dbContext.SaveChanges();

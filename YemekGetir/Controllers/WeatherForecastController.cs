@@ -51,5 +51,11 @@ namespace YemekGetir.Controllers
       var result = _context.LineItems.OrderBy(item => item.Id);
       return Ok(result);
     }
+    [HttpGet("orders")]
+    public IActionResult GetOrders()
+    {
+      var result = _context.Orders.OrderBy(order => order.Id);
+      return Ok(result);
+    }
   }
 }

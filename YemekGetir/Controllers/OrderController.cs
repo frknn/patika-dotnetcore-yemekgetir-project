@@ -19,6 +19,7 @@ using YemekGetir.Application.RestaurantOperations.Commands.AddAddress;
 using YemekGetir.Application.CartOperations.Commands.UpdateProduct;
 using YemekGetir.Application.CartOperations.Commands.EmptyCart;
 using YemekGetir.Application.OrderOperations.Commands.CreateOrder;
+using YemekGetir.Application.OrderOperations.Commands.UpdateOrder;
 
 namespace YemekGetir.Controllers
 {
@@ -39,7 +40,7 @@ namespace YemekGetir.Controllers
     }
 
     [Authorize]
-    [HttpPost()]
+    [HttpPost]
     public IActionResult CreateOrder()
     {
       CreateOrderCommand command = new CreateOrderCommand(_context, _mapper, _httpContextAccessor);
@@ -48,5 +49,19 @@ namespace YemekGetir.Controllers
 
       return Ok();
     }
+
+    [Authorize]
+    [HttpPut("{id}")]
+    public IActionResult UpdateOrder(string id, [FromBody] UpdateOrderModel orderStatus)
+    {
+      UpdateOrderCommand command = new UpdateOrderCommand(_context, _mapper, _httpContextAccessor);
+      command.Id = id;
+      command.Model = orderStatus;
+      command.Handle();
+
+      return Ok();
+    }
   }
 }
+
+

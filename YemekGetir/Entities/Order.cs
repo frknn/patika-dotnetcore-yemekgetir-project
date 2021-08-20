@@ -8,18 +8,15 @@ namespace YemekGetir.Entities
   {
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
-    public int UserId { get; set; }
     public User User { get; set; }
-    public int RestaurantId { get; set; }
     public Restaurant Restaurant { get; set; }
-    public int ShippingAddressId { get; set; }
+    // public int ShippingAddressId { get; set; }
     public Address ShippingAddress { get; set; }
     public List<LineItem> LineItems { get; set; }
     public int TotalPrice
     {
       get
       {
-        if (LineItems.Count == 0) return 0;
         return LineItems.Sum(item => item.TotalPrice);
       }
     }

@@ -29,16 +29,12 @@ namespace YemekGetir.Application.RestaurantOperations.Queries.GetRestaurantById
     public GetRestaurantByIdViewModel Handle()
     {
       Restaurant restaurant = _dbContext.Restaurants.Where(restaurant => restaurant.Id.ToString() == Id)
-        .Include(restaurant => restaurant.Orders)
+        .Include(restaurant => restaurant.Orders).ThenInclude(order => order.LineItems)
+        .Include(restaurant => restaurant.Orders).ThenInclude(order => order.User)
+        .Include(restaurant => restaurant.Orders).ThenInclude(order => order.ShippingAddress)
         .Include(restaurant => restaurant.Address)
         .Include(restaurant => restaurant.Products)
         .SingleOrDefault();
-
-      // foreach (var r in _dbContext.Restaurants)
-      // {
-      //   Console.WriteLine("Rest Id: " + r.Id + " - " + "Search Id: " + Id);
-      //   Console.WriteLine(r.Id == Id);
-      // }
 
       if (restaurant is null)
       {
@@ -69,9 +65,10 @@ namespace YemekGetir.Application.RestaurantOperations.Queries.GetRestaurantById
   public class GetRestaurantByIdOrderVM
   {
     public GetRestaurantByIdUserVM User { get; set; }
+    public Address ShippingAddress { get; set; }
     public string Status { get; set; }
     public int TotalPrice { get; set; }
-    public List<LineItem> LineItems { get; set; }
+    public List<GetRestaurantByIdLineItemVM> LineItems { get; set; }
   }
 
   public class GetRestaurantByIdAddressVM
@@ -95,6 +92,14 @@ namespace YemekGetir.Application.RestaurantOperations.Queries.GetRestaurantById
     public int Id { get; set; }
     public string Name { get; set; }
     public int Price { get; set; }
+  }
+
+  public class GetRestaurantByIdLineItemVM
+  {
+    public string Name { get; set; }
+    public int Quantity { get; set; }
+    public int Price { get; set; }
+    public int TotalPrice { get; set; }
   }
 
 }
