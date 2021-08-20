@@ -1,0 +1,60 @@
+using System;
+using System.Linq;
+using AutoMapper;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using YemekGetir.DBOperations;
+using YemekGetir.Entities;
+
+namespace YemekGetir.Application.OrderOperations.Commands.CreateOrder
+{
+  public class CreateOrderCommand
+  {
+    public string Id { get; set; }
+    private readonly IYemekGetirDbContext _dbContext;
+    private readonly IMapper _mapper;
+    private readonly IHttpContextAccessor _httpContextAccessor;
+
+    public CreateOrderCommand(IYemekGetirDbContext dbContext, IMapper mapper, IHttpContextAccessor httpContextAccessor)
+    {
+      _dbContext = dbContext;
+      _mapper = mapper;
+      _httpContextAccessor = httpContextAccessor;
+    }
+
+    public void Handle()
+    {
+      string requestOwnerId = _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(claim => claim.Type == "tokenHolderId").Value;
+      User user = _dbContext.Users
+      .Include(user => user.Cart)
+        .ThenInclude(cart => cart.LineItems.Where(item => item.isActive))
+        .ThenInclude(lineItem => lineItem.Product)
+        .ThenInclude(prod => prod.Restaurant)
+      .Include(user => user.Orders)
+      .Include(user => user.Address)
+      .SingleOrDefault(user => user.Id.ToString() == requestOwnerId);
+
+      if (user.Cart.LineItems == null || user.Cart.LineItems.Count == 0)
+      {
+        throw new InvalidOperationException("Sepetiniz boş. Sipariş oluşturabilmek için sepetinize ürün ekleyiniz.");
+      }
+
+      Restaurant restaurant = user.Cart.LineItems.First().Product.Restaurant;
+      Console.WriteLine(restaurant.Name);
+
+      Order order = new Order()
+      {
+        User = user,
+        Restaurant = restaurant,
+        ShippingAddress = user.Address,
+        LineItems = user.Cart.LineItems,
+      };
+
+      user.Orders.Add(order);
+      user.Cart.LineItems.ForEach(item => item.isActive = false);
+
+      _dbContext.SaveChanges();
+    }
+  }
+
+}

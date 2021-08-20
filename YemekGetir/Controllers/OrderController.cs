@@ -18,18 +18,19 @@ using YemekGetir.Application.CartOperations.Commands.AddProduct;
 using YemekGetir.Application.RestaurantOperations.Commands.AddAddress;
 using YemekGetir.Application.CartOperations.Commands.UpdateProduct;
 using YemekGetir.Application.CartOperations.Commands.EmptyCart;
+using YemekGetir.Application.OrderOperations.Commands.CreateOrder;
 
 namespace YemekGetir.Controllers
 {
   [ApiController]
   [Route("[Controller]s")]
-  public class CartController : ControllerBase
+  public class OrderController : ControllerBase
   {
     private readonly IYemekGetirDbContext _context;
     private readonly IMapper _mapper;
     private readonly IConfiguration _configuration;
     private readonly IHttpContextAccessor _httpContextAccessor;
-    public CartController(IYemekGetirDbContext context, IMapper mapper, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
+    public OrderController(IYemekGetirDbContext context, IMapper mapper, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
     {
       _context = context;
       _mapper = mapper;
@@ -38,47 +39,10 @@ namespace YemekGetir.Controllers
     }
 
     [Authorize]
-    [HttpPost("{id}")]
-    public IActionResult AddProduct(string id, [FromBody] AddProductToCartModel newItem)
+    [HttpPost()]
+    public IActionResult CreateOrder()
     {
-      AddProductCommand command = new AddProductCommand(_context, _mapper, _httpContextAccessor);
-      command.Id = id;
-      command.Model = newItem;
-
-      AddProductCommandValidator validator = new AddProductCommandValidator();
-      validator.ValidateAndThrow(command);
-
-      command.Handle();
-
-      return Ok();
-    }
-
-    [Authorize]
-    [HttpPut("{cartId}/items/{itemId}")]
-    public IActionResult UpdateProduct(string cartId, string itemId, [FromBody] UpdateProductInCartModel itemQuantity)
-    {
-      UpdateProductCommand command = new UpdateProductCommand(_context, _mapper, _httpContextAccessor);
-      command.CartId = cartId;
-      command.LineItemId = itemId;
-      command.Model = itemQuantity;
-
-      UpdateProductCommandValidator validator = new UpdateProductCommandValidator();
-      validator.ValidateAndThrow(command);
-
-      command.Handle();
-
-      return Ok();
-    }
-
-    [Authorize]
-    [HttpDelete("{id}/items")]
-    public IActionResult EmptyCart(string id)
-    {
-      EmptyCartCommand command = new EmptyCartCommand(_context, _httpContextAccessor);
-      command.Id = id;
-
-      EmptyCartCommandValidator validator = new EmptyCartCommandValidator();
-      validator.ValidateAndThrow(command);
+      CreateOrderCommand command = new CreateOrderCommand(_context, _mapper, _httpContextAccessor);
 
       command.Handle();
 

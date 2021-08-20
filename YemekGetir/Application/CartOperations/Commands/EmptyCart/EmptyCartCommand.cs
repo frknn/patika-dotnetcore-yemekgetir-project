@@ -34,7 +34,7 @@ namespace YemekGetir.Application.CartOperations.Commands.EmptyCart
         throw new InvalidOperationException("Yalnızca kendi sepetinizdeki ürünleri silebilirsiniz.");
       }
 
-      cart.LineItems.Clear();
+      cart.LineItems.ForEach(item => item.isActive = false);
       _dbContext.SaveChanges();
     }
   }

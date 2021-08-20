@@ -27,11 +27,18 @@ namespace YemekGetir.Application.UserOperations.Queries.GetUserById
 
     public GetUserByIdViewModel Handle()
     {
-      User user = _dbContext.Users.Where(user => Convert.ToString(user.Id) == Id)
-        .Include(user => user.Orders)
-        .Include(user => user.Cart).ThenInclude(cart => cart.LineItems)
-        .Include(user => user.Address)
+      User user = _dbContext.Users.Where(user => user.Id.ToString() == Id)
+      .Include(user => user.Cart)
+        .ThenInclude(cart => cart.LineItems.Where(item => item.isActive))
+        .AsNoTracking()
+      .Include(user => user.Orders)
+        .ThenInclude(order => order.Restaurant)
+      .Include(user => user.Orders)
+        .ThenInclude(order => order.LineItems)
+      .Include(user => user.Address)
       .SingleOrDefault();
+
+      // Console.WriteLine("Cart: " + user.Cart.LineItems.First().isActive);
       if (user is null)
       {
         throw new InvalidOperationException("Kullanıcı bulunamadı.");
@@ -65,12 +72,12 @@ namespace YemekGetir.Application.UserOperations.Queries.GetUserById
     public string RestaurantName { get; set; }
     public string Status { get; set; }
     public int TotalPrice { get; set; }
-    public List<LineItem> LineItems { get; set; }
+    public List<GetUserByIdLineItemVM> LineItems { get; set; }
   }
 
   public class GetUserByIdCartVM
   {
-    public List<LineItem> LineItems { get; set; }
+    public List<GetUserByIdLineItemVM> LineItems { get; set; }
     public int TotalPrice { get; set; }
   }
 
@@ -81,6 +88,14 @@ namespace YemekGetir.Application.UserOperations.Queries.GetUserById
     public string City { get; set; }
     public string Line1 { get; set; }
     public string Line2 { get; set; }
+  }
+
+  public class GetUserByIdLineItemVM
+  {
+    public string Name { get; set; }
+    public int Quantity { get; set; }
+    public int Price { get; set; }
+    public int TotalPrice { get; set; }
   }
 
 }

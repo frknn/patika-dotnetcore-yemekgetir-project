@@ -42,7 +42,13 @@ namespace YemekGetir.Controllers
     [HttpGet("carts")]
     public IActionResult GetCarts()
     {
-      var result = _context.Carts.Include(cart => cart.LineItems).OrderBy(cart => cart.Id);
+      var result = _context.Carts.Include(cart => cart.LineItems.Where(item => item.isActive)).OrderBy(cart => cart.Id);
+      return Ok(result);
+    }
+    [HttpGet("lineItems")]
+    public IActionResult GetLineItems()
+    {
+      var result = _context.LineItems.OrderBy(item => item.Id);
       return Ok(result);
     }
   }

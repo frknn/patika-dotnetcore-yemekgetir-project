@@ -43,13 +43,13 @@ namespace YemekGetir.Application.CartOperations.Commands.AddProduct
         throw new InvalidOperationException("Ürün bulunamadı.");
       }
 
-      bool hasAnyItemFromDiffrentRestaurant = cart.LineItems.Any(item => item.Product.RestaurantId != product.RestaurantId);
+      bool hasAnyItemFromDiffrentRestaurant = cart.LineItems.Any(item => item.Product.RestaurantId != product.RestaurantId && item.isActive);
       if (hasAnyItemFromDiffrentRestaurant)
       {
         throw new InvalidOperationException("Sepetinizde başka restorandan ürün bulunmaktadır. Bu restorandan ürün ekleyemezsiniz.");
       }
 
-      bool hasSameItemInCart = cart.LineItems.Any(lineItem => lineItem.ProductId == Model.ProductId);
+      bool hasSameItemInCart = cart.LineItems.Any(lineItem => lineItem.ProductId == Model.ProductId && lineItem.isActive);
       if (hasSameItemInCart)
       {
         var foundLineItem = cart.LineItems.SingleOrDefault(lineItem => lineItem.ProductId == Model.ProductId);
@@ -58,7 +58,7 @@ namespace YemekGetir.Application.CartOperations.Commands.AddProduct
         return;
       }
 
-      LineItem lineItem = new LineItem() { Name = product.Name, Quantity = Model.Quantity, Price = product.Price, ProductId = Model.ProductId };
+      LineItem lineItem = new LineItem() { Name = product.Name, Quantity = Model.Quantity, Price = product.Price, Product = product, ProductId = Model.ProductId };
 
       cart.LineItems.Add(lineItem);
       _dbContext.SaveChanges();

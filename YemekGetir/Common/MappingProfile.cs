@@ -52,6 +52,8 @@ namespace YemekGetir.Common
 
       CreateMap<CreateRestaurantModel, Restaurant>()
         .ForMember(dest => dest.Password, opt => opt.MapFrom(src => BCrypt.Net.BCrypt.HashPassword(src.Password)));
+
+      CreateMap<LineItem, GetUserByIdLineItemVM>();
     }
   }
 }
