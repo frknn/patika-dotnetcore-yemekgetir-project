@@ -35,8 +35,8 @@ namespace YemekGetir.DBOperations
         var address7 = new Address() { Country = "Turkey", City = "Eskişehir", District = "Merkez", Line1 = "Addres Line 1", Line2 = "Addres Line 2" };
         var address8 = new Address() { Country = "Turkey", City = "Kocaeli", District = "Merkez", Line1 = "Addres Line 1", Line2 = "Addres Line 2" };
 
-        var user1 = new User() { FirstName = "Furkan", LastName = "Setbaşı", Email = "furkan@example.com", Password = BCrypt.Net.BCrypt.HashPassword("furkan123"), Wallet = 0, Address = address7, PhoneNumber = "5554443322" };
-        var user2 = new User() { FirstName = "Hakan", LastName = "Setbaşı", Email = "hakan@example.com", Password = BCrypt.Net.BCrypt.HashPassword("hakan123"), Wallet = 100, Address = address8, PhoneNumber = "5556667788" };
+        var user1 = new User() { FirstName = "Furkan", LastName = "Setbaşı", Email = "furkan@example.com", Password = BCrypt.Net.BCrypt.HashPassword("furkan123"), Address = address7, PhoneNumber = "5554443322" };
+        var user2 = new User() { FirstName = "Hakan", LastName = "Setbaşı", Email = "hakan@example.com", Password = BCrypt.Net.BCrypt.HashPassword("hakan123"), Address = address8, PhoneNumber = "5556667788" };
 
         var restaurant1 = new Restaurant() { Name = "Hamburgerci", CategoryId = 1, Address = address1, Email = "hamburgerci@example.com", Password = BCrypt.Net.BCrypt.HashPassword("hamburgerci123"), Products = new List<Product> { product1, product2 } };
         var restaurant2 = new Restaurant() { Name = "Pizzacı", CategoryId = 2, Address = address2, Email = "pizzaci@example.com", Password = BCrypt.Net.BCrypt.HashPassword("pizzaci123"), Products = new List<Product> { product3 } };

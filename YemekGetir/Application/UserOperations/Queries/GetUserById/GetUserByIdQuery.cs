@@ -61,7 +61,6 @@ namespace YemekGetir.Application.UserOperations.Queries.GetUserById
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string PhoneNumber { get; set; }
-    public int Wallet { get; set; }
     public GetUserByIdAddressVM Address { get; set; }
     public GetUserByIdCartVM Cart { get; set; }
     public List<GetUserByIdOrderVM> Orders { get; set; }

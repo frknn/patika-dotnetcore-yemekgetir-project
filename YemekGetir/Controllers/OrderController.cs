@@ -20,6 +20,7 @@ using YemekGetir.Application.CartOperations.Commands.UpdateProduct;
 using YemekGetir.Application.CartOperations.Commands.EmptyCart;
 using YemekGetir.Application.OrderOperations.Commands.CreateOrder;
 using YemekGetir.Application.OrderOperations.Commands.UpdateOrder;
+using YemekGetir.Common;
 
 namespace YemekGetir.Controllers
 {
@@ -52,11 +53,14 @@ namespace YemekGetir.Controllers
 
     [Authorize]
     [HttpPut("{id}")]
-    public IActionResult UpdateOrder(string id, [FromBody] UpdateOrderModel orderStatus)
+    public IActionResult UpdateOrder(int id, [FromBody] UpdateOrderModel orderStatus)
     {
       UpdateOrderCommand command = new UpdateOrderCommand(_context, _mapper, _httpContextAccessor);
       command.Id = id;
       command.Model = orderStatus;
+
+      UpdateOrderCommandValidator validator = new UpdateOrderCommandValidator();
+      validator.ValidateAndThrow(command);
       command.Handle();
 
       return Ok();

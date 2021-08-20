@@ -7,8 +7,8 @@ namespace YemekGetir.Application.OrderOperations.Commands.UpdateOrder
   {
     public UpdateOrderCommandValidator()
     {
-      RuleFor(command => int.Parse(command.Id)).GreaterThan(0);
-      RuleFor(command => command.Model.StatusId).InclusiveBetween(2,3);
+      RuleFor(command => command.Id).GreaterThan(0);
+      RuleFor(command => command.Model.OrderStatus).IsInEnum();
     }
   }
 

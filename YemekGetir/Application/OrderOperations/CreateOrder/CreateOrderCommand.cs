@@ -48,11 +48,9 @@ namespace YemekGetir.Application.OrderOperations.Commands.CreateOrder
         Restaurant = restaurant,
         ShippingAddress = user.Address,
         LineItems = user.Cart.LineItems,
-
       };
 
-      // user.Orders.Add(order);
-      // restaurant.Orders.Add(order);
+
       _dbContext.Orders.Add(order);
       user.Cart.LineItems.ForEach(item => item.isActive = false);
 

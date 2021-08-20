@@ -14,7 +14,6 @@ namespace YemekGetir.Entities
     public string LastName { get; set; }
     public Address Address { get; set; }
     public string PhoneNumber { get; set; }
-    public int Wallet { get; set; } = 0;
     public Cart Cart { get; set; }
     public List<Order> Orders { get; set; }
     public string Email { get; set; }

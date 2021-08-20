@@ -3,6 +3,7 @@ using System.Linq;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using YemekGetir.Common;
 using YemekGetir.DBOperations;
 using YemekGetir.Entities;
 
@@ -10,7 +11,7 @@ namespace YemekGetir.Application.OrderOperations.Commands.UpdateOrder
 {
   public class UpdateOrderCommand
   {
-    public string Id { get; set; }
+    public int Id { get; set; }
     public UpdateOrderModel Model { get; set; }
     private readonly IYemekGetirDbContext _dbContext;
     private readonly IMapper _mapper;
@@ -27,7 +28,7 @@ namespace YemekGetir.Application.OrderOperations.Commands.UpdateOrder
     {
       string requestOwnerId = _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(claim => claim.Type == "tokenHolderId").Value;
       Restaurant restaurant = _dbContext.Restaurants.SingleOrDefault(restaurant => restaurant.Id.ToString() == requestOwnerId);
-      Order order = _dbContext.Orders.Include(order => order.Restaurant).SingleOrDefault(order => order.Id.ToString() == Id);
+      Order order = _dbContext.Orders.Include(order => order.Restaurant).SingleOrDefault(order => order.Id == Id);
       
       if (order is null)
       {
@@ -38,7 +39,7 @@ namespace YemekGetir.Application.OrderOperations.Commands.UpdateOrder
         throw new InvalidOperationException("Sadece kendi restoranınıza ait siparişlerin durumunu güncelleyebilirsiniz.");
       }
 
-      order.StatusId = Model.StatusId;
+      order.StatusId = (int)Model.OrderStatus;
 
       _dbContext.SaveChanges();
     }
@@ -46,7 +47,7 @@ namespace YemekGetir.Application.OrderOperations.Commands.UpdateOrder
 
   public class UpdateOrderModel
   {
-    public int StatusId { get; set; }
+    public StatusEnum OrderStatus { get; set; }
   }
 
 }
