@@ -13,9 +13,9 @@ using YemekGetir.Entities;
 
 namespace YemekGetir.Common
 {
-  public class MappingProfie : Profile
+  public class MappingProfile : Profile
   {
-    public MappingProfie()
+    public MappingProfile()
     {
       CreateMap<CreateUserModel, User>()
         .ForMember(dest => dest.Password, opt => opt.MapFrom(src => BCrypt.Net.BCrypt.HashPassword(src.Password)));
