@@ -27,7 +27,6 @@ namespace YemekGetir.Common
 
       CreateMap<Order, GetRestaurantByIdOrderVM>()
         .ForMember(dest => dest.Status, opt => opt.MapFrom(src => (StatusEnum)src.StatusId));
-      // .ForMember(dest => dest.User.Name, opt => opt.MapFrom(src => src.User.FirstName + " " + src.User.LastName));
 
       CreateMap<Cart, GetUserByIdCartVM>();
 
@@ -42,7 +41,8 @@ namespace YemekGetir.Common
       CreateMap<Address, GetRestaurantByIdAddressVM>();
 
       CreateMap<Order, GetUserByIdOrderVM>()
-        .ForMember(dest => dest.Status, opt => opt.MapFrom(src => (StatusEnum)src.StatusId));
+        .ForMember(dest => dest.Status, opt => opt.MapFrom(src => (StatusEnum)src.StatusId))
+        .ForMember(dest => dest.RestaurantName, opt => opt.MapFrom(src => src.Restaurant == null ? "Restoran Silinmiş" : src.Restaurant.Name));
 
       CreateMap<Product, GetRestaurantByIdProductVM>();
 
@@ -64,7 +64,7 @@ namespace YemekGetir.Common
       CreateMap<LineItem, GetRestaurantByIdLineItemVM>();
 
       CreateMap<UpdateRestaurantAddressModel, Address>();
-      
+
       CreateMap<UpdateUserAddressModel, Address>();
     }
   }

@@ -10,7 +10,6 @@ namespace YemekGetir.Entities
     public int Id { get; set; }
     public User User { get; set; }
     public Restaurant Restaurant { get; set; }
-    // public int ShippingAddressId { get; set; }
     public Address ShippingAddress { get; set; }
     public List<LineItem> LineItems { get; set; }
     public int TotalPrice
