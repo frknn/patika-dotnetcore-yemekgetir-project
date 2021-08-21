@@ -9,6 +9,7 @@ using YemekGetir.Application.UserOperations.Commands.CreateToken;
 using YemekGetir.Application.UserOperations.Commands.CreateUser;
 using YemekGetir.Application.UserOperations.Commands.DeleteUser;
 using YemekGetir.Application.UserOperations.Commands.RefreshToken;
+using YemekGetir.Application.UserOperations.Commands.UpdateAddress;
 using YemekGetir.Application.UserOperations.Queries.GetUserById;
 using YemekGetir.DBOperations;
 using YemekGetir.TokenOperations.Models;
@@ -99,6 +100,25 @@ namespace YemekGetir.Controllers
       AddAddressCommand command = new AddAddressCommand(_context, _mapper, _httpContextAccessor);
       command.Id = id;
       command.Model = newAddress;
+
+      AddAddressCommandValidator validator = new AddAddressCommandValidator();
+      validator.ValidateAndThrow(command);
+
+      command.Handle();
+
+      return Ok();
+    }
+
+    [Authorize]
+    [HttpPut("{id}/address")]
+    public IActionResult UpdateAddress(string id, [FromBody] UpdateUserAddressModel updatedAddress)
+    {
+      UpdateAddressCommand command = new UpdateAddressCommand(_context, _mapper, _httpContextAccessor);
+      command.Id = id;
+      command.Model = updatedAddress;
+
+      UpdateAddressCommandValidator validator = new UpdateAddressCommandValidator();
+      validator.ValidateAndThrow(command);
 
       command.Handle();
 

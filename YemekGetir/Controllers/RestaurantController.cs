@@ -13,10 +13,9 @@ using YemekGetir.DBOperations;
 using YemekGetir.TokenOperations.Models;
 using YemekGetir.Application.RestaurantOperations.Queries.GetRestaurants;
 using System.Collections.Generic;
-// using YemekGetir.Application.RestaurantOperations.Commands.AddProduct;
-using System;
 using YemekGetir.Application.RestaurantOperations.Commands.AddProduct;
 using YemekGetir.Application.RestaurantOperations.Commands.AddAddress;
+using YemekGetir.Application.RestaurantOperations.Commands.UpdateAddress;
 
 namespace YemekGetir.Controllers
 {
@@ -104,6 +103,22 @@ namespace YemekGetir.Controllers
       AddAddressCommand command = new AddAddressCommand(_context, _mapper, _httpContextAccessor);
       command.Id = id;
       command.Model = newAddress;
+
+      AddAddressCommandValidator validator = new AddAddressCommandValidator();
+      validator.ValidateAndThrow(command);
+
+      command.Handle();
+
+      return Ok();
+    }
+
+    [Authorize]
+    [HttpPut("{id}/address")]
+    public IActionResult UpdateAddress(string id, [FromBody] UpdateRestaurantAddressModel updatedAddress)
+    {
+      UpdateAddressCommand command = new UpdateAddressCommand(_context, _mapper, _httpContextAccessor);
+      command.Id = id;
+      command.Model = updatedAddress;
 
       command.Handle();
 

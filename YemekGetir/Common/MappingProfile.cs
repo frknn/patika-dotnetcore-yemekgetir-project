@@ -2,10 +2,12 @@ using AutoMapper;
 using YemekGetir.Application.RestaurantOperations.Commands.AddAddress;
 using YemekGetir.Application.RestaurantOperations.Commands.AddProduct;
 using YemekGetir.Application.RestaurantOperations.Commands.CreateRestaurant;
+using YemekGetir.Application.RestaurantOperations.Commands.UpdateAddress;
 using YemekGetir.Application.RestaurantOperations.Queries.GetRestaurantById;
 using YemekGetir.Application.RestaurantOperations.Queries.GetRestaurants;
 using YemekGetir.Application.UserOperations.Commands.AddAddress;
 using YemekGetir.Application.UserOperations.Commands.CreateUser;
+using YemekGetir.Application.UserOperations.Commands.UpdateAddress;
 using YemekGetir.Application.UserOperations.Queries.GetUserById;
 using YemekGetir.Entities;
 
@@ -60,6 +62,10 @@ namespace YemekGetir.Common
       CreateMap<LineItem, GetUserByIdLineItemVM>();
 
       CreateMap<LineItem, GetRestaurantByIdLineItemVM>();
+
+      CreateMap<UpdateRestaurantAddressModel, Address>();
+      
+      CreateMap<UpdateUserAddressModel, Address>();
     }
   }
 }
