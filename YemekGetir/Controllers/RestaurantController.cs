@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using YemekGetir.Application.RestaurantOperations.Commands.AddProduct;
 using YemekGetir.Application.RestaurantOperations.Commands.AddAddress;
 using YemekGetir.Application.RestaurantOperations.Commands.UpdateAddress;
+using YemekGetir.Application.RestaurantOperations.Commands.UpdateProduct;
 
 namespace YemekGetir.Controllers
 {
@@ -144,6 +145,23 @@ namespace YemekGetir.Controllers
       command.Model = newProduct;
 
       AddProductCommandValidator validator = new AddProductCommandValidator();
+      validator.ValidateAndThrow(command);
+
+      command.Handle();
+
+      return Ok();
+    }
+
+    [Authorize]
+    [HttpPut("{restaurantId}/products/{productId}")]
+    public IActionResult UpdateProduct(string restaurantId, string productId,[FromBody] UpdateProductModel updatedProduct)
+    {
+      UpdateProductCommand command = new UpdateProductCommand(_context, _mapper, _httpContextAccessor);
+      command.RestaurantId = restaurantId;
+      command.ProductId = productId;
+      command.Model = updatedProduct;
+
+      UpdateProductCommandValidator validator = new UpdateProductCommandValidator();
       validator.ValidateAndThrow(command);
 
       command.Handle();

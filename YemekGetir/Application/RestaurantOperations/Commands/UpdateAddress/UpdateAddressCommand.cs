@@ -44,11 +44,11 @@ namespace YemekGetir.Application.RestaurantOperations.Commands.UpdateAddress
 
       Address updatedAddress = _mapper.Map<Address>(Model);
 
-      restaurant.Address.Country = string.Empty == updatedAddress.Country ? restaurant.Address.Country : updatedAddress.Country;
-      restaurant.Address.City = string.Empty == updatedAddress.City ? restaurant.Address.City : updatedAddress.City;
-      restaurant.Address.District = string.Empty == updatedAddress.District ? restaurant.Address.District : updatedAddress.District;
-      restaurant.Address.Line1 = string.Empty == updatedAddress.Line1 ? restaurant.Address.Line1 : updatedAddress.Line1;
-      restaurant.Address.Line2 = string.Empty == updatedAddress.Line2 ? restaurant.Address.Line2 : updatedAddress.Line2;
+      restaurant.Address.Country = string.IsNullOrEmpty(updatedAddress.Country) ? restaurant.Address.Country : updatedAddress.Country;
+      restaurant.Address.City = string.IsNullOrEmpty(updatedAddress.City) ? restaurant.Address.City : updatedAddress.City;
+      restaurant.Address.District = string.IsNullOrEmpty(updatedAddress.District) ? restaurant.Address.District : updatedAddress.District;
+      restaurant.Address.Line1 = string.IsNullOrEmpty(updatedAddress.Line1) ? restaurant.Address.Line1 : updatedAddress.Line1;
+      restaurant.Address.Line2 = string.IsNullOrEmpty(updatedAddress.Line2) ? restaurant.Address.Line2 : updatedAddress.Line2;
 
       _dbContext.SaveChanges();
     }
