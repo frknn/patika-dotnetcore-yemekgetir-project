@@ -30,7 +30,7 @@ namespace Application.UserOperations.Commands.CreateUser
         Password = BCrypt.Net.BCrypt.HashPassword("existing123"),
         FirstName = "existingfn",
         LastName = "existingln",
-
+        PhoneNumber = "5555555555"
       };
       _dbContext.Users.Add(User);
       _dbContext.SaveChanges();
@@ -43,6 +43,7 @@ namespace Application.UserOperations.Commands.CreateUser
         Password = "existing123",
         FirstName = "existingfn",
         LastName = "existingln",
+        PhoneNumber = "5555555555"
       };
 
       // act & assert
@@ -53,27 +54,28 @@ namespace Application.UserOperations.Commands.CreateUser
         .Message.Should().Be("Kullanıcı zaten mevcut.");
     }
 
-    // [Fact]
-    // public void WhenValidInputsAreGiven_User_ShouldBeCreated()
-    // {
-    //   // arrange
-    //   CreateUserCommand command = new CreateUserCommand(_dbContext, _mapper);
-    //   var model = new CreateUserModel()
-    //   {
-    //     Email = "new@example.com",
-    //     Password = "new123123",
-    //     FirstName = "newUser",
-    //     LastName = "newUserln",
-    //   };
-    //   command.Model = model;
+    [Fact]
+    public void WhenValidInputsAreGiven_User_ShouldBeCreated()
+    {
+      // arrange
+      CreateUserCommand command = new CreateUserCommand(_dbContext, _mapper);
+      var model = new CreateUserModel()
+      {
+        Email = "new@example.com",
+        Password = "new123123",
+        FirstName = "newUser",
+        LastName = "newUserln",
+        PhoneNumber = "5555555555"
+      };
+      command.Model = model;
 
-    //   // act
-    //   FluentActions.Invoking(() => command.Handle()).Invoke();
+      // act
+      FluentActions.Invoking(() => command.Handle()).Invoke();
 
-    //   // assert
-    //   var User = _dbContext.Users.SingleOrDefault(User => User.Email.ToLower() == model.Email.ToLower());
+      // assert
+      var User = _dbContext.Users.SingleOrDefault(User => User.Email.ToLower() == model.Email.ToLower());
 
-    //   User.Should().NotBeNull();
-    // }
+      User.Should().NotBeNull();
+    }
   }
 }
