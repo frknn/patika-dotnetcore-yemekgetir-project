@@ -4,7 +4,6 @@ using System.Linq;
 using System.Security.Claims;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 using Moq;
 using YemekGetir.Application.UserOperations.Commands.DeleteUser;
 using YemekGetir.DBOperations;
@@ -14,7 +13,7 @@ using Xunit;
 using YemekGetir.Application.UserOperations.Commands.CreateUser;
 using AutoMapper;
 
-namespace Application.MovieOperations.Commands.DeleteUser
+namespace Application.UserOperations.Commands.DeleteUser
 {
   public class DeleteUserCommandTests : IClassFixture<CommonTestFixture>
   {

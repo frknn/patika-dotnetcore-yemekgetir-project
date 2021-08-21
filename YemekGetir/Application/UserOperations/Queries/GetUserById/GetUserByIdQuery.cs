@@ -38,7 +38,6 @@ namespace YemekGetir.Application.UserOperations.Queries.GetUserById
       .Include(user => user.Address)
       .SingleOrDefault();
 
-      // Console.WriteLine("Cart: " + user.Cart.LineItems.First().isActive);
       if (user is null)
       {
         throw new InvalidOperationException("Kullanıcı bulunamadı.");
