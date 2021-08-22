@@ -31,7 +31,7 @@ namespace Application.RestaurantOperations.Commands.AddProduct
     }
 
     [Fact]
-    public void WhenValidInputsAreGiven_Validator_ShouldReturnErrors()
+    public void WhenValidInputsAreGiven_Validator_ShouldReturnNotErrors()
     {
       // arrange
       AddProductCommand command = new AddProductCommand(null, null, null);

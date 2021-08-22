@@ -122,7 +122,7 @@ namespace Application.UserOperations.Commands.UpdateAddress
     }
 
     [Fact]
-    public void WhenValidInputsAreGiven_Address_ShouldBeAddedToUser()
+    public void WhenValidInputsAreGiven_Address_ShouldBeUpdated()
     {
       Address address = new Address()
       {

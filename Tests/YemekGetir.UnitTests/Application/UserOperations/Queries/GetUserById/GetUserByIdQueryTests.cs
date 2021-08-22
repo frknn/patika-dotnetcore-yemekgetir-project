@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using AutoMapper;
 using FluentAssertions;
-using YemekGetir.Application.UserOperations.Commands.AddAddress;
 using YemekGetir.DBOperations;
 using YemekGetir.Entities;
 using TestSetup;

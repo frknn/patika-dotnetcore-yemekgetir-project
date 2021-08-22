@@ -38,7 +38,7 @@ namespace Application.RestaurantOperations.Commands.AddAddress
     }
 
     [Fact]
-    public void WhenValidInputsAreGiven_Validator_ShouldReturnErrors()
+    public void WhenValidInputsAreGiven_Validator_ShouldReturnNotErrors()
     {
       // arrange
       AddAddressCommand command = new AddAddressCommand(null, null, null);

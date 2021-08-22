@@ -8,7 +8,7 @@ namespace Application.RestaurantOperations.Commands.UpdateAddress
   public class UpdateAddressCommandValidatorTests : IClassFixture<CommonTestFixture>
   {
     [Fact]
-    public void WhenValidInputsAreGiven_Validator_ShouldReturnErrors()
+    public void WhenValidInputsAreGiven_Validator_ShouldNotReturnErrors()
     {
       // arrange
       UpdateAddressCommand command = new UpdateAddressCommand(null, null, null);
