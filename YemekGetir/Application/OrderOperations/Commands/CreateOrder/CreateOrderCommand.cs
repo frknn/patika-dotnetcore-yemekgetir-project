@@ -10,7 +10,6 @@ namespace YemekGetir.Application.OrderOperations.Commands.CreateOrder
 {
   public class CreateOrderCommand
   {
-    public string Id { get; set; }
     private readonly IYemekGetirDbContext _dbContext;
     private readonly IMapper _mapper;
     private readonly IHttpContextAccessor _httpContextAccessor;
