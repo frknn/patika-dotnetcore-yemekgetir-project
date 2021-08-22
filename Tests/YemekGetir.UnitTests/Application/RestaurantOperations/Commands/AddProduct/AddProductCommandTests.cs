@@ -91,7 +91,7 @@ namespace Application.RestaurantOperations.Commands.AddProduct
       Restaurant restaurant = new Restaurant()
       {
         Name = "newrest",
-        Email = "newrest9874563212@example.com",
+        Email = "newr888est9874563212@example.com",
         Password = "newrest9874563212",
         CategoryId = 1,
       };

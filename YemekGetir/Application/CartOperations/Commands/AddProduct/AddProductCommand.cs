@@ -10,7 +10,7 @@ namespace YemekGetir.Application.CartOperations.Commands.AddProduct
 {
   public class AddProductCommand
   {
-    public string Id { get; set; }
+    public int Id { get; set; }
     public AddProductToCartModel Model { get; set; }
     private readonly IYemekGetirDbContext _dbContext;
     private readonly IMapper _mapper;
@@ -25,22 +25,22 @@ namespace YemekGetir.Application.CartOperations.Commands.AddProduct
 
     public void Handle()
     {
-      Cart cart = _dbContext.Carts.Include(cart => cart.LineItems).ThenInclude(lineItem => lineItem.Product).SingleOrDefault(cart => cart.Id.ToString() == Id);
+      Cart cart = _dbContext.Carts.Include(cart => cart.LineItems).ThenInclude(lineItem => lineItem.Product).SingleOrDefault(cart => cart.Id == Id);
       if (cart is null)
       {
         throw new InvalidOperationException("Sepet bulunamadı.");
-      }
-
-      string requestOwnerId = _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(claim => claim.Type == "tokenHolderId").Value;
-      if (requestOwnerId != cart.UserId.ToString())
-      {
-        throw new InvalidOperationException("Yalnızca kendi sepetinize ürün ekleyebilirsiniz.");
       }
 
       Product product = _dbContext.Products.SingleOrDefault(product => product.Id == Model.ProductId);
       if (product is null)
       {
         throw new InvalidOperationException("Ürün bulunamadı.");
+      }
+
+      string requestOwnerId = _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(claim => claim.Type == "tokenHolderId").Value;
+      if (requestOwnerId != cart.UserId.ToString())
+      {
+        throw new InvalidOperationException("Yalnızca kendi sepetinize ürün ekleyebilirsiniz.");
       }
 
       bool hasAnyItemFromDiffrentRestaurant = cart.LineItems.Any(item => item.Product.RestaurantId != product.RestaurantId && item.isActive);

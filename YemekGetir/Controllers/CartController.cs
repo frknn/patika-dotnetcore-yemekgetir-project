@@ -39,7 +39,7 @@ namespace YemekGetir.Controllers
 
     [Authorize]
     [HttpPost("{id}")]
-    public IActionResult AddProduct(string id, [FromBody] AddProductToCartModel newItem)
+    public IActionResult AddProduct(int id, [FromBody] AddProductToCartModel newItem)
     {
       AddProductCommand command = new AddProductCommand(_context, _mapper, _httpContextAccessor);
       command.Id = id;
